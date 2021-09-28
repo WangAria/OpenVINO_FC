@@ -41,10 +41,6 @@ conda install cudatoolkit=10.1 cudnn=7.6.5
 >>>print(hello.device)
 >>>print(hello)
 ```
-If the result shown in Figure appears, it proves that TensorFlow 2.2.0 is installed successfully.
-
-![image](https://user-images.githubusercontent.com/91500280/135003704-9de75dfc-5e13-4881-b0ea-4a511690893a.png)
-
 ## 2.Running a FC-DenseNet-03 demo
 **Step 1**: Clone the source code to a local folder
 ```Python
@@ -69,8 +65,6 @@ The command to install from source code is：
 pip install -U git+https://github.com/microsoft/onnxconverter-common
 pip install -U git+https://github.com/onnx/keras-onnx
 ```
-**【Annotation】** Installation keras2onnx refer to:  https://pypi.org/project/keras2onnx/
-
 **Step 2**: Running the convert_to_onnx.py Python script to convert the Keras h5 model to the ONNX model.
 ```Python
 python convert_to_onnx.py
@@ -99,3 +93,16 @@ onnx_model = keras2onnx.convert_keras(model, model.name)
 # Save the onnx model weights
 keras2onnx.save_model(onnx_model, onnx_model_weights)
 ```
+**Step 3**: Initialize the OpenVINO™ environment after installing OpenVINO 2021.4. 
+```Python
+"C:\Program Files (x86)\Intel\openvino_2021.4.582\bin\setupvars.bat"
+```
+**Step 4**: Convert the ONNX model to an IR format file, enter the command line terminal under the path of <INSTALL_DIR>\deployment_tools\model_optimizer：
+```Python
+python mo_onnx.py --input_model <models_dir>\my_tiramisu.onnx --output_dir <ir_dir>
+```
+**Step 5** run the inference_run.py to do the inference based on OpenVINO
+```Python
+D:\100-tiramisu-keras>python inference_run.py -d CPU
+```
+You will get the inference results
